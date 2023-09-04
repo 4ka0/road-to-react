@@ -6,6 +6,8 @@ const date = {
   day: "4",
 };
 
+const fruits = ["apples", "oranges", "lemons", "grapes", "melons"];
+
 function getGreeting(name) {
   return "Hi, " + name + ".";
   return "Hi, {name}.";
@@ -14,11 +16,22 @@ function getGreeting(name) {
 function App() {
   return (
     <div>
-      <h1>
+      <p>
+
         {getGreeting("Jon")}
-        <br />
+
+        <br /><br />
+
         Today is {date.month} {date.day}, {date.year}.
-      </h1>
+
+        <br /><br />
+
+        Here are some of my favourite fruits:
+        <ul>
+          {fruits.map(fruit => { return <li>{fruit}</li> })}
+        </ul>
+
+      </p>
       <label htmlFor="search">Search: </label>
       <input id="search" type="text" />
     </div>
