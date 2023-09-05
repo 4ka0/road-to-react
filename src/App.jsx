@@ -6,11 +6,27 @@ const date = {
   day: "4",
 };
 
-const fruits = ["apples", "oranges", "lemons", "grapes", "melons"];
+const list = [
+  {
+    title: "React",
+    url: "https://reactjs.org/",
+    author: "Jordan Walke",
+    num_comments: 3,
+    points: 4,
+    objectID: 0,
+  },
+  {
+    title: "Redux",
+    url: "https://redux.js.org/",
+    author: "Dan Abramov, Andrew Clark",
+    num_comments: 2,
+    points: 5,
+    objectID: 1,
+  },
+]
 
 function getGreeting(name) {
   return "Hi, " + name + ".";
-  return "Hi, {name}.";
 }
 
 function App() {
@@ -26,9 +42,15 @@ function App() {
 
         <br /><br />
 
-        Here are some of my favourite fruits:
+        Iterating through a list of JavaScript objects using map():
         <ul>
-          {fruits.map(fruit => { return <li>{fruit}</li> })}
+          {list.map(function (item) {
+            return (
+              <li key={item.objectID}>
+                <a href={item.url}>{item.title}</a>, {item.author} ({item.num_comments} comments, {item.points} points)
+              </li>
+            );
+          })}
         </ul>
 
       </p>
