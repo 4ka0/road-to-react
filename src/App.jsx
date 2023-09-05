@@ -1,10 +1,5 @@
 import * as React from 'react';
 
-const date = {
-  year: "2023",
-  month: "September",
-  day: "4",
-};
 
 const list = [
   {
@@ -25,37 +20,46 @@ const list = [
   },
 ]
 
-function getGreeting(name) {
-  return "Hi, " + name + ".";
+
+// A component.
+function List() {
+  return (
+    <ul>
+      {list.map(function (item) {
+        return (
+          <li key={item.objectID}>
+            <a href={item.url}>{item.title}</a>, {item.author} ({item.num_comments} comments, {item.points} points)
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
+
+function Search() {
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" />
+    </div>
+  );
+}
+
+
+// The main app component.
 function App() {
   return (
     <div>
-      <p>
 
-        {getGreeting("Jon")}
+      <h1>My Hacker Stories</h1>
 
-        <br /><br />
+      <Search />
 
-        Today is {date.month} {date.day}, {date.year}.
+      <hr />
 
-        <br /><br />
+      <List />
 
-        Iterating through a list of JavaScript objects using map():
-        <ul>
-          {list.map(function (item) {
-            return (
-              <li key={item.objectID}>
-                <a href={item.url}>{item.title}</a>, {item.author} ({item.num_comments} comments, {item.points} points)
-              </li>
-            );
-          })}
-        </ul>
-
-      </p>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
     </div>
   );
 }
