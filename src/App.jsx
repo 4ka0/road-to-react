@@ -21,48 +21,36 @@ const list = [
 ]
 
 
-// A component.
-const List = () => {
-  return (
-    <ul>
-      {list.map((item) => {
-        return (
-          <li key={item.objectID}>
-            <a href={item.url}>{item.title}</a>, {item.author} ({item.num_comments} comments, {item.points} points)
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
+// Component for a list.
+const List = () => (
+  <ul>
+    {list.map((item) => (
+      <li key={item.objectID}>
+        <a href={item.url}>{item.title}</a>, {item.author} ({item.num_comments} comments, {item.points} points)
+      </li>
+    ))}
+  </ul>
+);
 
 
-const Search = () => {
-  return (
-    <div>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
-    </div>
-  );
-}
+// Component for a search field.
+const Search = () => (
+  <div>
+    <label htmlFor="search">Search: </label>
+    <input id="search" type="text" />
+  </div>
+);
 
 
 // The main app component.
-const App = () => {
-  return (
-    <div>
-
-      <h1>My Hacker Stories</h1>
-
-      <Search />
-
-      <br />
-      <hr />
-
-      <List />
-
-    </div>
-  );
-}
+const App = () => (
+  <div>
+    <h1>My Hacker Stories</h1>
+    <Search />
+    <br />
+    <hr />
+    <List />
+  </div>
+);
 
 export default App;
