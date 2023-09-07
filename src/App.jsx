@@ -22,10 +22,10 @@ const list = [
 
 
 // A component.
-function List() {
+const List = () => {
   return (
     <ul>
-      {list.map(function (item) {
+      {list.map((item) => {
         return (
           <li key={item.objectID}>
             <a href={item.url}>{item.title}</a>, {item.author} ({item.num_comments} comments, {item.points} points)
@@ -37,7 +37,7 @@ function List() {
 }
 
 
-function Search() {
+const Search = () => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
@@ -48,7 +48,7 @@ function Search() {
 
 
 // The main app component.
-function App() {
+const App = () => {
   return (
     <div>
 
@@ -56,6 +56,7 @@ function App() {
 
       <Search />
 
+      <br />
       <hr />
 
       <List />
