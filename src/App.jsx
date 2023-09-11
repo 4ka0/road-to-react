@@ -23,9 +23,9 @@ const App = () => {
     },
   ]
 
-  // A
+  // Event handler for Search in App.
+  // Receives event from event handler in Search.
   const handleSearch = (event) => {
-    // D
     console.log(event.target.value);
   };
 
@@ -33,7 +33,6 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      {/* // B */}
       <Search onSearch={handleSearch} />
 
       <br />
@@ -53,7 +52,7 @@ const Search = (props) => {
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
-    // C
+    // Provides event for onSearch event in App as prop.
     props.onSearch(event);
   }
 
