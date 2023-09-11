@@ -23,25 +23,38 @@ const App = () => {
     },
   ]
 
+  // A
+  const handleSearch = (event) => {
+    // D
+    console.log(event.target.value);
+  };
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <Search />
+
+      {/* // B */}
+      <Search onSearch={handleSearch} />
+
       <br />
       <hr />
+
       <List list={stories}/>
+
     </div>
-  )
+  );
 };
 
 
 // Component for a search field.
-const Search = () => {
+const Search = (props) => {
 
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+    // C
+    props.onSearch(event);
   }
 
   return (
@@ -52,7 +65,7 @@ const Search = () => {
         Searching for <strong>&quot;{searchTerm}&quot;</strong>.
       </p>
     </div>
-  )
+  );
 };
 
 
@@ -66,7 +79,7 @@ const List = (props) => {
         );
       })}
     </ul>
-  )
+  );
 };
 
 
@@ -80,7 +93,7 @@ const Item = (props) => {
       <span>; {props.item.num_comments} comments</span>
       <span>; {props.item.points} points</span>
     </li>
-  )
+  );
 };
 
 
