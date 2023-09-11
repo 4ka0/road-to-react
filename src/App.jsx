@@ -22,6 +22,14 @@ const App = () => {
       points: 5,
       objectID: 1,
     },
+    {
+      title: "Apple Jam",
+      url: "https://redux.js.org/",
+      author: "Bryan Bookstaff",
+      num_comments: 4,
+      points: 3,
+      objectID: 2,
+    },
   ]
 
   // For managing the state of a searched term.
@@ -80,6 +88,7 @@ const List = (props) => {
 };
 
 
+// Component for a list item.
 const Item = (props) => {
   return (
     <li>
