@@ -4,6 +4,7 @@ import * as React from 'react';
 // The main app component.
 const App = () => {
 
+  // Available developer stories.
   const stories = [
     {
       title: "React",
@@ -23,11 +24,20 @@ const App = () => {
     },
   ]
 
-  // Event handler for Search in App.
-  // Receives event from event handler in Search.
+  // For managing the state of a searched term.
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  // Receives an event from the Search component.
   const handleSearch = (event) => {
-    console.log(event.target.value);
+    setSearchTerm(event.target.value);
   };
+
+  // Filters the available stories by the input search term.
+  // filter() is a built-in js function that takes a function as an argument
+  // and returns an array containing items that match the given condition.
+  const searchedStories = stories.filter((story) =>
+    story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
@@ -38,7 +48,7 @@ const App = () => {
       <br />
       <hr />
 
-      <List list={stories}/>
+      <List list={searchedStories}/>
 
     </div>
   );
@@ -47,22 +57,10 @@ const App = () => {
 
 // Component for a search field.
 const Search = (props) => {
-
-  const [searchTerm, setSearchTerm] = React.useState("");
-
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-    // Provides event for onSearch event in App as prop.
-    props.onSearch(event);
-  }
-
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
-      <p>
-        Searching for <strong>&quot;{searchTerm}&quot;</strong>.
-      </p>
+      <input id="search" type="text" onChange={props.onSearch} />
     </div>
   );
 };
