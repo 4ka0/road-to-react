@@ -1,38 +1,30 @@
 import * as React from 'react';
 
 
-const list = [
-  {
-    title: "React",
-    url: "https://reactjs.org/",
-    author: "Jordan Walke",
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: "Redux",
-    url: "https://redux.js.org/",
-    author: "Dan Abramov, Andrew Clark",
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
-]
-
-
 // Component for a list.
-const List = () => {
+const List = (props) => {
   return (
     <ul>
-      {list.map((item) => {
+      {props.list.map((item) => {
         return (
-          <li key={item.objectID}>
-            <a href={item.url}>{item.title}</a>, {item.author} ({item.num_comments} comments, {item.points} points)
-          </li>
+          <Item key={item.objectID} item={item}/>
         );
       })}
     </ul>
+  )
+};
+
+
+const Item = (props) => {
+  return (
+    <li>
+      <span>
+        <a href={props.item.url}>{props.item.title}</a>
+      </span>
+      <span>; {props.item.author}</span>
+      <span>; {props.item.num_comments} comments</span>
+      <span>; {props.item.points} points</span>
+    </li>
   )
 };
 
@@ -56,13 +48,33 @@ const Search = () => {
 
 // The main app component.
 const App = () => {
+
+  const stories = [
+    {
+      title: "React",
+      url: "https://reactjs.org/",
+      author: "Jordan Walke",
+      num_comments: 3,
+      points: 4,
+      objectID: 0,
+    },
+    {
+      title: "Redux",
+      url: "https://redux.js.org/",
+      author: "Dan Abramov, Andrew Clark",
+      num_comments: 2,
+      points: 5,
+      objectID: 1,
+    },
+  ]
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
       <Search />
       <br />
       <hr />
-      <List />
+      <List list={stories}/>
     </div>
   )
 };
