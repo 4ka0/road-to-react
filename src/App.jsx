@@ -1,55 +1,6 @@
 import * as React from 'react';
 
 
-// Component for a list.
-const List = (props) => {
-  return (
-    <ul>
-      {props.list.map((item) => {
-        return (
-          <Item key={item.objectID} item={item}/>
-        );
-      })}
-    </ul>
-  )
-};
-
-
-const Item = (props) => {
-  return (
-    <li>
-      <span>
-        <a href={props.item.url}>{props.item.title}</a>
-      </span>
-      <span>; {props.item.author}</span>
-      <span>; {props.item.num_comments} comments</span>
-      <span>; {props.item.points} points</span>
-    </li>
-  )
-};
-
-
-// Component for a search field.
-const Search = () => {
-
-  const [searchTerm, setSearchTerm] = React.useState("");
-
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-  }
-
-  return (
-    <div>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
-      <p>
-        Searching for <strong>&quot;{searchTerm}&quot;</strong>.
-      </p>
-    </div>
-  )
-};
-
-
 // The main app component.
 const App = () => {
 
@@ -82,5 +33,55 @@ const App = () => {
     </div>
   )
 };
+
+
+// Component for a search field.
+const Search = () => {
+
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  }
+
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" onChange={handleChange} />
+      <p>
+        Searching for <strong>&quot;{searchTerm}&quot;</strong>.
+      </p>
+    </div>
+  )
+};
+
+
+// Component for a list.
+const List = (props) => {
+  return (
+    <ul>
+      {props.list.map((item) => {
+        return (
+          <Item key={item.objectID} item={item}/>
+        );
+      })}
+    </ul>
+  )
+};
+
+
+const Item = (props) => {
+  return (
+    <li>
+      <span>
+        <a href={props.item.url}>{props.item.title}</a>
+      </span>
+      <span>; {props.item.author}</span>
+      <span>; {props.item.num_comments} comments</span>
+      <span>; {props.item.points} points</span>
+    </li>
+  )
+};
+
 
 export default App;
