@@ -32,7 +32,7 @@ const App = () => {
     },
   ]
 
-  // For managing the state of a searched term.
+  // useState hook is used for managing the state of a searched term.
   // The initial state of searchTerm is either retrieved from local storage if
   // it exists there or is set to a blank string.
   const [searchTerm, setSearchTerm] = React.useState(
