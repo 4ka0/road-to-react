@@ -85,12 +85,16 @@ const Search = ({ search, onSearch }) => {
 
 
 // Component for a list.
+// Instead of passing "props" to this component and then using "props.list" in
+// the component, it is more conventional to use JS object destructuring in the
+// component's function signature "{ list }" to make it possible to then simply
+// use "list" instead of "props.list".
 const List = ({ list }) => {
   return (
     <ul>
       {list.map((item) => {
         return (
-          <Item key={item.objectID} item={item}/>
+          <Item key={item.objectID} item={item} />
         );
       })}
     </ul>
