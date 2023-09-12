@@ -84,12 +84,14 @@ const App = () => {
       <h1>My Hacker Stories</h1>
 
       {/* Above handleSearch event handler passed to the Search component.
-          The current searchTerm is also passed down. */}
+          The current searchTerm is also passed down.
+          Just using "isFocused" is the same as "isFocused={true}" */}
       <InputWithLabel
         id="search"
         type="text"
         value={searchTerm}
         onInputChange={handleSearch}
+        isFocused
       >
           <strong>Search:</strong>
       </InputWithLabel>
@@ -110,7 +112,7 @@ const App = () => {
 // The "children" prop passes everthing included between the <InputWithLabel>
 // opening and closing tags when instantiated in App, which in this case is:
 // "<strong>Search:</strong>"
-const InputWithLabel = ({id, type, value, onInputChange, children}) => {
+const InputWithLabel = ({id, type, value, onInputChange, isFocused, children}) => {
   return (
     <>
       {/* "htmlFor" is the JSX version of the "for" attribute used in an
@@ -128,7 +130,13 @@ const InputWithLabel = ({id, type, value, onInputChange, children}) => {
           handled by handleSearch.
           This process of passing state from a child component to the parent
           component is called "lifting state". */}
-      <input id={id} type={type} value={value} onChange={onInputChange} />
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onInputChange}
+        autoFocus={isFocused}
+      />
     </>
   );
 };
