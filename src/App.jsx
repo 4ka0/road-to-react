@@ -80,7 +80,7 @@ const App = () => {
   );
 
   return (
-    <div>
+    <>
       <h1>My Hacker Stories</h1>
 
       {/* Above handleSearch event handler passed to the Search component.
@@ -92,7 +92,7 @@ const App = () => {
 
       <List list={searchedStories} />
 
-    </div>
+    </>
   );
 };
 
@@ -100,7 +100,7 @@ const App = () => {
 // Component for a search field.
 const Search = ({ search, onSearch }) => {
   return (
-    <div>
+    <>
       <label htmlFor="search">Search: </label>
 
       {/* By passing the current searchTerm down from App to here, the current
@@ -110,7 +110,7 @@ const Search = ({ search, onSearch }) => {
           Search instantiation. This process of passing state from a child
           component to the parent component is called "lifting state". */}
       <input id="search" type="text" value={search} onChange={onSearch} />
-    </div>
+    </>
   );
 };
 
