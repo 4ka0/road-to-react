@@ -87,10 +87,12 @@ const App = () => {
           The current searchTerm is also passed down. */}
       <InputWithLabel
         id="search"
-        label="Search"
         type="text"
         value={searchTerm}
-        onInputChange={handleSearch} />
+        onInputChange={handleSearch}
+      >
+          <strong>Search:</strong>
+      </InputWithLabel>
 
       <br />
       <hr />
@@ -105,12 +107,15 @@ const App = () => {
 // Component for displaying an input field with a label.
 // Designed to be reusable for different kinds of input fields, but in the case
 // of this app, this is just used for the search field which accepts text.
-const InputWithLabel = ({id, label, type, value, onInputChange}) => {
+// The "children" prop passes everthing included between the <InputWithLabel>
+// opening and closing tags when instantiated in App, which in this case is:
+// "<strong>Search:</strong>"
+const InputWithLabel = ({id, type, value, onInputChange, children}) => {
   return (
     <>
       {/* "htmlFor" is the JSX version of the "for" attribute used in an
           ordinary HTML label tag. */}
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{children}</label>
 
       &nbsp;
 
