@@ -52,8 +52,9 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      {/* Above handleSearch event handler passed to the Search component. */}
-      <Search onSearch={handleSearch} />
+      {/* Above handleSearch event handler passed to the Search component.
+          The current searchTerm is also passed down. */}
+      <Search search={searchTerm} onSearch={handleSearch} />
 
       <br />
       <hr />
@@ -71,10 +72,13 @@ const Search = (props) => {
     <div>
       <label htmlFor="search">Search: </label>
 
-      {/* The onChange event is passed via props to onSearch defined in the
+      {/* By passing the current searchTerm down from App to here, the current
+          state of searchTerm can be explicitly set as the value of the below
+          input field.
+          The onChange event is passed via props to onSearch defined in the
           Search instantiation. This process of passing state from a child
           component to the parent component is called "lifting state". */}
-      <input id="search" type="text" onChange={props.onSearch} />
+      <input id="search" type="text" value={props.searchTerm} onChange={props.onSearch} />
 
     </div>
   );
