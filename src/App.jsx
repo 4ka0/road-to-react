@@ -67,7 +67,7 @@ const App = () => {
 
 
 // Component for a search field.
-const Search = (props) => {
+const Search = ({ search, onSearch }) => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
@@ -78,18 +78,17 @@ const Search = (props) => {
           The onChange event is passed via props to onSearch defined in the
           Search instantiation. This process of passing state from a child
           component to the parent component is called "lifting state". */}
-      <input id="search" type="text" value={props.searchTerm} onChange={props.onSearch} />
-
+      <input id="search" type="text" value={search} onChange={onSearch} />
     </div>
   );
 };
 
 
 // Component for a list.
-const List = (props) => {
+const List = ({ list }) => {
   return (
     <ul>
-      {props.list.map((item) => {
+      {list.map((item) => {
         return (
           <Item key={item.objectID} item={item}/>
         );
@@ -100,15 +99,15 @@ const List = (props) => {
 
 
 // Component for a list item.
-const Item = (props) => {
+const Item = ({ item }) => {
   return (
     <li>
       <span>
-        <a href={props.item.url}>{props.item.title}</a>
+        <a href={item.url}>{item.title}</a>
       </span>
-      <span>; {props.item.author}</span>
-      <span>; {props.item.num_comments} comments</span>
-      <span>; {props.item.points} points</span>
+      <span>; {item.author}</span>
+      <span>; {item.num_comments} comments</span>
+      <span>; {item.points} points</span>
     </li>
   );
 };
