@@ -85,7 +85,12 @@ const App = () => {
 
       {/* Above handleSearch event handler passed to the Search component.
           The current searchTerm is also passed down. */}
-      <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel
+        id="search"
+        label="Search"
+        type="text"
+        value={searchTerm}
+        onInputChange={handleSearch} />
 
       <br />
       <hr />
@@ -97,19 +102,28 @@ const App = () => {
 };
 
 
-// Component for a search field.
-const Search = ({ search, onSearch }) => {
+// Component for displaying an input field with a label.
+// Designed to be reusable for different kinds of input fields, but in the case
+// of this app, this is just used for the search field which accepts text.
+const InputWithLabel = ({id, label, type, value, onInputChange}) => {
   return (
     <>
-      <label htmlFor="search">Search: </label>
+      {/* "htmlFor" is the JSX version of the "for" attribute used in an
+          ordinary HTML label tag. */}
+      <label htmlFor={id}>{label}</label>
 
-      {/* By passing the current searchTerm down from App to here, the current
-          state of searchTerm can be explicitly set as the value of the below
-          input field.
-          The onChange event is passed via props to onSearch defined in the
-          Search instantiation. This process of passing state from a child
-          component to the parent component is called "lifting state". */}
-      <input id="search" type="text" value={search} onChange={onSearch} />
+      &nbsp;
+
+      {/* By passing the current searched term from App to here as the "value",
+          this can be explicitly set as the value of the below input field.
+
+          If an onChange event occurs in the input field (basically if a single
+          char is entered/deleted), this is passed to onInputChange which is
+          defined in the InputWithLabel instantiation in App, and is then
+          handled by handleSearch.
+          This process of passing state from a child component to the parent
+          component is called "lifting state". */}
+      <input id={id} type={type} value={value} onChange={onInputChange} />
     </>
   );
 };
