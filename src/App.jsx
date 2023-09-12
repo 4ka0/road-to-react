@@ -35,28 +35,52 @@ const App = () => {
   // Available developer stories.
   const stories = [
     {
+      objectID: 0,
       title: "React",
       url: "https://reactjs.org/",
       author: "Jordan Walke",
       num_comments: 3,
       points: 4,
-      objectID: 0,
     },
     {
+      objectID: 1,
       title: "Redux",
       url: "https://redux.js.org/",
       author: "Dan Abramov, Andrew Clark",
       num_comments: 2,
       points: 5,
-      objectID: 1,
     },
     {
-      title: "Apple Jam",
+      objectID: 2,
+      title: "Alpine JS",
       url: "https://redux.js.org/",
-      author: "Bryan Bookstaff",
+      author: "Raymond Wigshaw",
       num_comments: 4,
       points: 3,
-      objectID: 2,
+    },
+    {
+      objectID: 3,
+      title: "Bootstrap",
+      url: "https://redux.js.org/",
+      author: "Susan Flywheel",
+      num_comments: 4,
+      points: 3,
+    },
+    {
+      objectID: 4,
+      title: "Django",
+      url: "https://redux.js.org/",
+      author: "Jennifer Workgray",
+      num_comments: 4,
+      points: 3,
+    },
+    {
+      objectID: 5,
+      title: "Django Rest Framework",
+      url: "https://redux.js.org/",
+      author: "Jimbo Greenchin",
+      num_comments: 4,
+      points: 3,
     },
   ]
 
