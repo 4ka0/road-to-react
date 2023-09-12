@@ -1,6 +1,34 @@
 import * as React from 'react';
 
 
+// A custom hook for a value to be updated and stored in local storage.
+// The "key" is a unique identifier for the value in question in the storage.
+// This allows this hook to be used for more than one purpose hereafter.
+// I.e. for the searchTerm and also possibly for other variables.
+const useStorageState = (key, initialState) => {
+
+  // The React useState hook is used for managing the state of a searched term.
+  // The initial state of "value" (searched term) is either retrieved from local
+  // storage if it exists there or is set to the given initialState.
+  const [value, setValue] = React.useState(
+    localStorage.getItem(key) || initialState
+  );
+
+  // The React useEffect hook us used to trigger a side-effect whenever "value"
+  // (searched term) changes. The most recent "value" is stored in the browser
+  // so as to be remembered if the user closes the browser page.
+  // useEffect takes two args. The first is the actual side-effect that is run.
+  // The second is an array of variables. If any of the variables change, the
+  // side-effect is run.
+  React.useEffect(() => {
+      localStorage.setItem(key, value);
+    }, [value, key]
+  );
+
+  return [value, setValue];
+};
+
+
 // The main app component.
 const App = () => {
 
@@ -32,23 +60,10 @@ const App = () => {
     },
   ]
 
-  // useState hook is used for managing the state of a searched term.
-  // The initial state of searchTerm is either retrieved from local storage if
-  // it exists there or is set to a blank string.
-  const [searchTerm, setSearchTerm] = React.useState(
-    localStorage.getItem("recentSearch") || ""
-  );
-
-  // useEffect hook used to trigger a side-effect whenever searchTerm changes.
-  // The most recent search term is stored in the browser so as to be remembered
-  // if the user closes the browser page.
-  // useEffect takes two args. The first is the actual side-effect that is run.
-  // The second is an array of variables. If any of the variables changes, the
-  // side-effect is run.
-  React.useEffect(() => {
-      localStorage.setItem("recentSearch", searchTerm);
-    }, [searchTerm]
-  );
+  // Uses the custom hook declared above.
+  // "search" is passed as a key underwhich searchTerm is stored in local storage.
+  // "" is the initial state os searchTerm.
+  const [searchTerm, setSearchTerm] = useStorageState("search", "");
 
   // An event handler that is used as a callback handler for information to be
   // passed from a child to a parent component (here, the information is an event
@@ -100,7 +115,7 @@ const Search = ({ search, onSearch }) => {
 };
 
 
-// Component for a list.
+// Component for displaying a list of stories.
 // Instead of passing "props" to this component and then using "props.list" in
 // the component, it is more conventional to use JS object destructuring in the
 // component's function signature "{ list }" to make it possible to then simply
@@ -118,7 +133,7 @@ const List = ({ list }) => {
 };
 
 
-// Component for a list item.
+// Component for displaying an individual item of a list.
 const Item = ({ item }) => {
   return (
     <li>
