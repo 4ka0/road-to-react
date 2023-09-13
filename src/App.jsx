@@ -142,36 +142,20 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (event) => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
+    event.preventDefault();  // To prevent browser default page reload.
   };
 
   return (
     <>
       <h1>My Hacker Stories</h1>
 
-      {/* Above handleSearch event handler passed to the Search component.
-          The current searchTerm is also passed down.
-          Just using "isFocused" is the same as "isFocused={true}" */}
-      <InputWithLabel
-        id="search"
-        type="text"
-        value={searchTerm}
-        onInputChange={handleSearchInput}
-        isFocused
-      >
-          <strong>Search:</strong>
-      </InputWithLabel>
-
-      &nbsp;
-
-      <button
-        type="button"
-        disabled={!searchTerm}
-        onClick={handleSearchSubmit}
-      >
-        Submit
-      </button>
+      <SearchForm
+        searchTerm={searchTerm}
+        onSearchInput={handleSearchInput}
+        onSearchSubmit={handleSearchSubmit}
+      />
 
       <br />
       <hr />
@@ -194,6 +178,33 @@ const App = () => {
         <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
 
+    </>
+  );
+};
+
+
+const SearchForm = ({searchTerm, onSearchInput, onSearchSubmit}) => {
+  return (
+    <>
+      <form onSubmit={onSearchSubmit} >
+
+        <InputWithLabel
+          id="search"
+          // type="text"
+          value={searchTerm}
+          onInputChange={onSearchInput}
+          isFocused  // Just using "isFocused" is the same as "isFocused={true}"
+        >
+            <strong>Search:</strong>
+        </InputWithLabel>
+
+        &nbsp;
+
+        <button type="button" disabled={!searchTerm} >
+          Submit
+        </button>
+
+      </form>
     </>
   );
 };
