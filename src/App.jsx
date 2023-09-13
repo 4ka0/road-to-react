@@ -77,7 +77,6 @@ const storiesReducer = (state, action) => {
 // The main app component.
 const App = () => {
 
-
   // Uses the above reducer to manage state for the list of stories
   // and also for conditional display for while data is retrieved and for if
   // there is an error when retrieving the data.
@@ -91,13 +90,19 @@ const App = () => {
     }
   );
 
+
   // Uses the custom hook declared above.
   // "search" is passed as a key underwhich searchTerm is stored in local storage.
   // "" is the initial state os searchTerm.
   const [searchTerm, setSearchTerm] = useStorageState("search", "");
 
-  // Side-effect hook to fetch stories from the API asynchronously.
-  React.useEffect(() => {
+
+  // Memoized function used for fetching data.
+  // Used in the side-effect hook after this function, but can also be used
+  // elsewhere if necessary.
+  // Memoized functions are useful for moving reusable code to outside of a
+  // side-effect hook.
+  const handleFetchStories = React.useCallback(() => {
 
     // To handle the edge case where the search term is blank, null, etc.
     if (!searchTerm) return;
@@ -116,6 +121,12 @@ const App = () => {
         dispatchStories({ type: "STORIES_FETCH_FAILURE" })
       );
   }, [searchTerm]);
+
+  // Side-effect hook to fetch stories from the API asynchronously.
+  React.useEffect(() => {
+    handleFetchStories();
+  }, [handleFetchStories]);
+
 
   // An event handler to remove an item from the list.
   const handleRemoveStory = (item) => {
