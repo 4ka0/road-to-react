@@ -15,8 +15,9 @@ const useStorageState = (key, initialState) => {
   );
 
   // The React useEffect hook us used to trigger a side-effect whenever "value"
-  // (searched term) changes. The most recent "value" is stored in the browser
-  // so as to be remembered if the user closes the browser page.
+  // (searched term) changes. Basically, when the search term changes (a char is
+  // entered or deleted, the most recent "value" is stored in the browser so as
+  // to be remembered if the user closes the browser page.
   // useEffect takes two args. The first is the actual side-effect that is run.
   // The second is an array of variables. If any of the variables change, the
   // side-effect is run.
@@ -29,60 +30,78 @@ const useStorageState = (key, initialState) => {
 };
 
 
+// Developer stories.
+const initialStories = [
+  {
+    objectID: 0,
+    title: "React",
+    url: "https://reactjs.org/",
+    author: "Jordan Walke",
+    num_comments: 3,
+    points: 4,
+  },
+  {
+    objectID: 1,
+    title: "Redux",
+    url: "https://redux.js.org/",
+    author: "Dan Abramov, Andrew Clark",
+    num_comments: 2,
+    points: 5,
+  },
+  {
+    objectID: 2,
+    title: "Alpine JS",
+    url: "https://redux.js.org/",
+    author: "Raymond Wigshaw",
+    num_comments: 4,
+    points: 3,
+  },
+  {
+    objectID: 3,
+    title: "Bootstrap",
+    url: "https://redux.js.org/",
+    author: "Susan Flywheel",
+    num_comments: 4,
+    points: 3,
+  },
+  {
+    objectID: 4,
+    title: "Django",
+    url: "https://redux.js.org/",
+    author: "Jennifer Workgray",
+    num_comments: 4,
+    points: 3,
+  },
+  {
+    objectID: 5,
+    title: "Django Rest Framework",
+    url: "https://redux.js.org/",
+    author: "Jimbo Greenchin",
+    num_comments: 4,
+    points: 3,
+  },
+]
+
+
 // The main app component.
 const App = () => {
 
-  // Available developer stories.
-  const stories = [
-    {
-      objectID: 0,
-      title: "React",
-      url: "https://reactjs.org/",
-      author: "Jordan Walke",
-      num_comments: 3,
-      points: 4,
-    },
-    {
-      objectID: 1,
-      title: "Redux",
-      url: "https://redux.js.org/",
-      author: "Dan Abramov, Andrew Clark",
-      num_comments: 2,
-      points: 5,
-    },
-    {
-      objectID: 2,
-      title: "Alpine JS",
-      url: "https://redux.js.org/",
-      author: "Raymond Wigshaw",
-      num_comments: 4,
-      points: 3,
-    },
-    {
-      objectID: 3,
-      title: "Bootstrap",
-      url: "https://redux.js.org/",
-      author: "Susan Flywheel",
-      num_comments: 4,
-      points: 3,
-    },
-    {
-      objectID: 4,
-      title: "Django",
-      url: "https://redux.js.org/",
-      author: "Jennifer Workgray",
-      num_comments: 4,
-      points: 3,
-    },
-    {
-      objectID: 5,
-      title: "Django Rest Framework",
-      url: "https://redux.js.org/",
-      author: "Jimbo Greenchin",
-      num_comments: 4,
-      points: 3,
-    },
-  ]
+  // CRUD functionality.
+
+  // The React hook "useState" is used to make the list of stories stateful.
+  const [stories, setStories] = React.useState(initialStories);
+
+  // An event handler to remove an item from the list.
+  // Creates a new array containing all the items that do not have the same
+  // object ID as the item to be removed.
+  const handleRemoveStory = (item) => {
+    const newStories = stories.filter(
+      (story) => story.objectID !== item.objectID
+    );
+    setStories(newStories);
+  };
+
+  // Search functionality.
 
   // Uses the custom hook declared above.
   // "search" is passed as a key underwhich searchTerm is stored in local storage.
@@ -123,7 +142,7 @@ const App = () => {
       <br />
       <hr />
 
-      <List list={searchedStories} />
+      <List list={searchedStories} onRemoveItem={handleRemoveStory} />
 
     </>
   );
@@ -169,14 +188,19 @@ const InputWithLabel = ({id, type, value, onInputChange, isFocused, children}) =
 // Component for displaying a list of stories.
 // Instead of passing "props" to this component and then using "props.list" in
 // the component, it is more conventional to use JS object destructuring in the
-// component's function signature "{ list }" to make it possible to then simply
-// use "list" instead of "props.list".
-const List = ({ list }) => {
+// component's function signature "{ list, onRemoveItem }" to make it possible
+// to then simply use "list" instead of "props.list", "props.onRemoveItem", etc.
+// "onRemoveItem" is an event handler being passed down from App to Item.
+const List = ({ list, onRemoveItem }) => {
   return (
     <ul>
       {list.map((item) => {
         return (
-          <Item key={item.objectID} item={item} />
+          <Item
+            key={item.objectID}
+            item={item}
+            onRemoveItem={onRemoveItem}
+          />
         );
       })}
     </ul>
@@ -185,7 +209,13 @@ const List = ({ list }) => {
 
 
 // Component for displaying an individual item of a list.
-const Item = ({ item }) => {
+const Item = ({ item, onRemoveItem }) => {
+
+  // Callback handler to handle removing an item.
+  const handleRemoveItem = () => {
+    onRemoveItem(item);
+  };
+
   return (
     <li>
       <span>
@@ -193,7 +223,12 @@ const Item = ({ item }) => {
       </span>
       <span>; {item.author}</span>
       <span>; {item.num_comments} comments</span>
-      <span>; {item.points} points</span>
+      <span>; {item.points} points </span>
+      <span>
+        <button type="button" onClick={handleRemoveItem}>
+          Delete
+        </button>
+      </span>
     </li>
   );
 };
