@@ -98,6 +98,9 @@ const getAsyncStories = () =>
 // The main app component.
 const App = () => {
 
+  // State hook used for a loading indicator when data is being fetched.
+  const [isLoading, setIsLoading] = React.useState(false);
+
   // CRUD functionality.
 
   // The React hook "useState" is used to make the list of stories stateful.
@@ -106,9 +109,12 @@ const App = () => {
   // An empty array of stories is initially used when rendering the components,
   // and then the stories are fetched asynchronously using the side-effect hook
   // shown below.
+  // The loading indicator is set to true/false accordingly therein.
   React.useEffect(() => {
+    setIsLoading(true);
     getAsyncStories().then(result => {
       setStories(result.data.stories);
+      setIsLoading(false);
     });
   }, []);
 
@@ -163,7 +169,14 @@ const App = () => {
       <br />
       <hr />
 
-      <List list={searchedStories} onRemoveItem={handleRemoveStory} />
+      {/* Conditional rendering based on "isLoading".
+          If true, a loading indicator is displayed.
+          If false, the list of stories is displayed. */}
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <List list={searchedStories} onRemoveItem={handleRemoveStory} />
+      )}
 
     </>
   );
