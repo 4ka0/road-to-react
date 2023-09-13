@@ -83,6 +83,7 @@ const App = () => {
   // there is an error when retrieving the data.
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer,
+    // Initial data etc.
     {
       data: [],  // An array to hold the list of stories.
       isLoading: false,
@@ -95,9 +96,7 @@ const App = () => {
   // "" is the initial state os searchTerm.
   const [searchTerm, setSearchTerm] = useStorageState("search", "");
 
-  // An empty array of stories is initially used when rendering the components,
-  // and then the stories are fetched asynchronously using the side-effect hook
-  // shown below.
+  // Side-effect hook to fetch stories from the API asynchronously.
   React.useEffect(() => {
 
     // To handle the edge case where the search term is blank, null, etc.
