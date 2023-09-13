@@ -87,26 +87,45 @@ const initialStories = [
 // Set up so as to simulate calling an external API (e.g. with a delay of 1 sec)
 // to receive a list of stories.
 const getAsyncStories = () =>
-  new Promise((resolve) =>
-    setTimeout(() =>
-      resolve({ data: { stories: initialStories } }),
-      1000
-    )
+  new Promise((resolve, reject) =>
+    setTimeout(reject, 2000)
   );
 
 
-// Reducer funtion to handle state of stories.
+// Reducer function to handle state for the stories.
 // A reducer is used when managing the state of more than one related item
-// (in this case retrieving the list of stories and CRUD functions therefor).
+// (in this case retrieving the list of stories, errors, loading state, and CRUD
+// functions therefor). This helps to avoid impossible states arising as the
+// values for each state can be more finely controlled.
 // In comparison, the useState hook is used when managing the state of one item.
 const storiesReducer = (state, action) => {
   switch (action.type) {
-    case "SET_STORIES":
-      return action.payload;
-    case "REMOVE_STORY":
-      return state.filter(
-        (story) => action.payload.objectID !== story.objectID
-      );
+    case "STORIES_FETCH_INIT":
+      return {
+        ...state,  // Spread operator used to include everything from the "state" object.
+        isLoading: true,
+        isError: false,
+      };
+    case "STORIES_FETCH_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload,
+      };
+      case "STORIES_FETCH_FAILURE":
+        return {
+          ...state,
+          isLoading: false,
+          isError: true,
+        };
+      case "REMOVE_STORY":
+        return {
+          ...state,
+          data: state.data.filter(
+            (story) => action.payload.objectID !== story.objectID
+          ),
+        };
     default:
       throw new Error();
   }
@@ -116,33 +135,36 @@ const storiesReducer = (state, action) => {
 // The main app component.
 const App = () => {
 
-  // State hook used for a loading indicator when data is being fetched.
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  // State hook used for error handling when data is fetched.
-  const [isError, setIsError] = React.useState(false);
-
-
-  // CRUD FUNCTIONALITY.
-
-  // The above reducer funtion is used to make the list of stories stateful.
-  const [stories, dispatchStories] = React.useReducer(storiesReducer, []);
+  // Uses the above reducer to manage state for the list of stories
+  // and also for conditional display for while data is retrieved and for if
+  // there is an error when retrieving the data.
+  const [stories, dispatchStories] = React.useReducer(
+    storiesReducer,
+    {
+      data: [],  // An array to hold the list of stories.
+      isLoading: false,
+      isError: false,
+    }
+  );
 
   // An empty array of stories is initially used when rendering the components,
   // and then the stories are fetched asynchronously using the side-effect hook
   // shown below.
   // The loading indicator is set to true/false accordingly therein.
   React.useEffect(() => {
-    setIsLoading(true);
+
+    dispatchStories({ type: "STORIES_FETCH_INIT" });
+
     getAsyncStories()
       .then(result => {
         dispatchStories({
-          type: "SET_STORIES",
+          type: "STORIES_FETCH_SUCCESS",
           payload: result.data.stories,
         });
-        setIsLoading(false);
       })
-      .catch(() => setIsError(true));
+      .catch(() =>
+        dispatchStories({ type: "STORIES_FETCH_FAILURE" })
+      );
   }, []);
 
   // An event handler to remove an item from the list.
@@ -171,7 +193,7 @@ const App = () => {
 
   // Filters the available stories by the current searchTerm defined in the
   // above state handler.
-  const searchedStories = stories.filter((story) =>
+  const searchedStories = stories.data.filter((story) =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -198,8 +220,8 @@ const App = () => {
       {/* Conditional rendering based on "isError".
           If true, an error message is displayed.
           If false, nothing is displayed. */}
-      {isError ? (
-        <p>Something went wrong...</p>
+      {stories.isError ? (
+        <p>Data could not be loaded.</p>
       ) : (
         null
       )}
@@ -207,8 +229,8 @@ const App = () => {
       {/* Conditional rendering based on "isLoading".
           If true, a loading indicator is displayed.
           If false, the list of stories is displayed. */}
-      {isLoading ? (
-        <p>Loading...</p>
+      {stories.isLoading ? (
+        <p>Loading data ...</p>
       ) : (
         <List list={searchedStories} onRemoveItem={handleRemoveStory} />
       )}
