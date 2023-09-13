@@ -1,4 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
+import axios from "axios";
 
 
 // A custom hook for a value to be updated and stored in local storage.
@@ -108,12 +109,12 @@ const App = () => {
 
     dispatchStories({ type: "STORIES_FETCH_INIT" });
 
-    fetch(url)
-      .then((response) => response.json())
+    axios
+      .get(url)
       .then(result => {
         dispatchStories({
           type: "STORIES_FETCH_SUCCESS",
-          payload: result.hits,
+          payload: result.data.hits,
         });
       })
       .catch(() =>
@@ -165,7 +166,7 @@ const App = () => {
       </InputWithLabel>
 
       &nbsp;
-      
+
       <button
         type="button"
         disabled={!searchTerm}
