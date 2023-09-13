@@ -95,6 +95,24 @@ const getAsyncStories = () =>
   );
 
 
+// Reducer funtion to handle state of stories.
+// A reducer is used when managing the state of more than one related item
+// (in this case retrieving the list of stories and CRUD functions therefor).
+// In comparison, the useState hook is used when managing the state of one item.
+const storiesReducer = (state, action) => {
+  switch (action.type) {
+    case "SET_STORIES":
+      return action.payload;
+    case "REMOVE_STORY":
+      return state.filter(
+        (story) => action.payload.objectID !== story.objectID
+      );
+    default:
+      throw new Error();
+  }
+};
+
+
 // The main app component.
 const App = () => {
 
@@ -104,10 +122,11 @@ const App = () => {
   // State hook used for error handling when data is fetched.
   const [isError, setIsError] = React.useState(false);
 
-  // CRUD functionality.
 
-  // The React hook "useState" is used to make the list of stories stateful.
-  const [stories, setStories] = React.useState([]);
+  // CRUD FUNCTIONALITY.
+
+  // The above reducer funtion is used to make the list of stories stateful.
+  const [stories, dispatchStories] = React.useReducer(storiesReducer, []);
 
   // An empty array of stories is initially used when rendering the components,
   // and then the stories are fetched asynchronously using the side-effect hook
@@ -117,23 +136,25 @@ const App = () => {
     setIsLoading(true);
     getAsyncStories()
       .then(result => {
-        setStories(result.data.stories);
+        dispatchStories({
+          type: "SET_STORIES",
+          payload: result.data.stories,
+        });
         setIsLoading(false);
       })
       .catch(() => setIsError(true));
   }, []);
 
   // An event handler to remove an item from the list.
-  // Creates a new array containing all the items that do not have the same
-  // object ID as the item to be removed.
   const handleRemoveStory = (item) => {
-    const newStories = stories.filter(
-      (story) => story.objectID !== item.objectID
-    );
-    setStories(newStories);
+    dispatchStories({
+      type: "REMOVE_STORY",
+      payload: item,
+    });
   };
 
-  // Search functionality.
+
+  // SEARCH FUNCTIONALITY.
 
   // Uses the custom hook declared above.
   // "search" is passed as a key underwhich searchTerm is stored in local storage.
