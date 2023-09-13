@@ -83,13 +83,34 @@ const initialStories = [
 ]
 
 
+// A promise for an object holding a list of stories.
+// Set up so as to simulate calling an external API (e.g. with a delay of 1 sec)
+// to receive a list of stories.
+const getAsyncStories = () =>
+  new Promise((resolve) =>
+    setTimeout(() =>
+      resolve({ data: { stories: initialStories } }),
+      1000
+    )
+  );
+
+
 // The main app component.
 const App = () => {
 
   // CRUD functionality.
 
   // The React hook "useState" is used to make the list of stories stateful.
-  const [stories, setStories] = React.useState(initialStories);
+  const [stories, setStories] = React.useState([]);
+
+  // An empty array of stories is initially used when rendering the components,
+  // and then the stories are fetched asynchronously using the side-effect hook
+  // shown below.
+  React.useEffect(() => {
+    getAsyncStories().then(result => {
+      setStories(result.data.stories);
+    });
+  }, []);
 
   // An event handler to remove an item from the list.
   // Creates a new array containing all the items that do not have the same
