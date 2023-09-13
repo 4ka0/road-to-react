@@ -101,6 +101,9 @@ const App = () => {
   // State hook used for a loading indicator when data is being fetched.
   const [isLoading, setIsLoading] = React.useState(false);
 
+  // State hook used for error handling when data is fetched.
+  const [isError, setIsError] = React.useState(false);
+
   // CRUD functionality.
 
   // The React hook "useState" is used to make the list of stories stateful.
@@ -112,10 +115,12 @@ const App = () => {
   // The loading indicator is set to true/false accordingly therein.
   React.useEffect(() => {
     setIsLoading(true);
-    getAsyncStories().then(result => {
-      setStories(result.data.stories);
-      setIsLoading(false);
-    });
+    getAsyncStories()
+      .then(result => {
+        setStories(result.data.stories);
+        setIsLoading(false);
+      })
+      .catch(() => setIsError(true));
   }, []);
 
   // An event handler to remove an item from the list.
@@ -168,6 +173,15 @@ const App = () => {
 
       <br />
       <hr />
+
+      {/* Conditional rendering based on "isError".
+          If true, an error message is displayed.
+          If false, nothing is displayed. */}
+      {isError ? (
+        <p>Something went wrong...</p>
+      ) : (
+        null
+      )}
 
       {/* Conditional rendering based on "isLoading".
           If true, a loading indicator is displayed.
