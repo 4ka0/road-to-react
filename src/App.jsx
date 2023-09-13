@@ -200,7 +200,7 @@ const SearchForm = ({searchTerm, onSearchInput, onSearchSubmit}) => {
 
         &nbsp;
 
-        <button type="button" disabled={!searchTerm} >
+        <button type="submit" disabled={!searchTerm} >
           Submit
         </button>
 
