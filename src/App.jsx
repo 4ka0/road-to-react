@@ -34,15 +34,6 @@ const useStorageState = (key, initialState) => {
 const API_ENDPOINT = "https://hn.algolia.com/api/v1/search?query=";
 
 
-// A promise for an object holding a list of stories.
-// Set up so as to simulate calling an external API (e.g. with a delay of 1 sec)
-// to receive a list of stories.
-const getAsyncStories = () =>
-  new Promise((resolve, reject) =>
-    setTimeout(reject, 2000)
-  );
-
-
 // Reducer function to handle state for the stories.
 // A reducer is used when managing the state of more than one related item
 // (in this case retrieving the list of stories, errors, loading state, and CRUD
@@ -269,7 +260,7 @@ const Item = ({ item, onRemoveItem }) => {
       <span>; {item.points} points </span>
       <span>
         <button type="button" onClick={handleRemoveItem}>
-          Delete
+          Remove
         </button>
       </span>
     </li>
