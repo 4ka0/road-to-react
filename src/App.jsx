@@ -19,6 +19,8 @@ const useStorageState = (key, initialState) => {
   // (searched term) changes. Basically, when the search term changes (a char is
   // entered or deleted), the most recent "value" is stored in the browser so as
   // to be remembered if the user closes the browser page.
+  // useEffect is ahook that for synchronizing a component with an external
+  // system such as local browser storage or an external API.
   // useEffect takes two args. The first is the actual side-effect that is run.
   // The second is an array of variables. If any of the variables change, the
   // side-effect is run.
